@@ -1,0 +1,49 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Earthquakes across Australia. Size = magnitude, colour = depth. Interactive: drag the slider to hide smaller quakes. Annotated with the main seismic zones.",
+  "width": "container", "height": 480,
+  "projection": { "type": "mercator" },
+  "params": [
+    { "name": "minMag", "value": 2.5,
+      "bind": { "input": "range", "min": 2.5, "max": 7, "step": 0.5, "name": "Minimum magnitude  " } }
+  ],
+  "layer": [
+    {
+      "data": { "url": "data/au.json", "format": { "type": "json", "property": "features" } },
+      "mark": { "type": "geoshape", "fill": "#27333f", "stroke": "#3b4a59", "strokeWidth": 0.6 }
+    },
+    {
+      "data": { "url": "data/earthquakes.csv" },
+      "transform": [
+        { "filter": "datum.latitude >= -45 && datum.latitude <= -9 && datum.longitude >= 110 && datum.longitude <= 155" },
+        { "filter": "datum.preferred_magnitude >= minMag" }
+      ],
+      "mark": { "type": "circle", "opacity": 0.55 },
+      "encoding": {
+        "longitude": { "field": "longitude", "type": "quantitative" },
+        "latitude": { "field": "latitude", "type": "quantitative" },
+        "size": { "field": "preferred_magnitude", "type": "quantitative", "title": "Magnitude", "scale": { "range": [4, 500] } },
+        "color": { "field": "depth", "type": "quantitative", "title": "Depth (km)" },
+        "tooltip": [
+          { "field": "description", "type": "nominal", "title": "Location" },
+          { "field": "preferred_magnitude", "type": "quantitative", "title": "Magnitude" },
+          { "field": "depth", "type": "quantitative", "title": "Depth (km)" },
+          { "field": "origin_time", "type": "temporal", "title": "When" }
+        ]
+      }
+    },
+    {
+      "data": { "values": [
+        { "lon": 117.0, "lat": -30.5, "t": "SW WA / Meckering zone" },
+        { "lon": 138.6, "lat": -31.0, "t": "Flinders Ranges" },
+        { "lon": 134.2, "lat": -19.2, "t": "Tennant Creek" }
+      ] },
+      "mark": { "type": "text", "align": "left", "dx": 6, "fontSize": 11, "fontWeight": 700, "color": "#ffffff", "stroke": "#0e1620", "strokeWidth": 0.5 },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "text": { "field": "t", "type": "nominal" }
+      }
+    }
+  ]
+}

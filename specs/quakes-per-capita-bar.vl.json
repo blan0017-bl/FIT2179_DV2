@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Earthquakes per million residents by state (DERIVED: GA counts / ABS population, Sep 2025).",
+  "width": "container", "height": 300,
+  "data": { "url": "data/state-stats.csv" },
+  "mark": "bar",
+  "encoding": {
+    "y": { "field": "state", "type": "nominal", "title": null, "sort": "-x" },
+    "x": { "field": "per_million", "type": "quantitative", "title": "Per million residents" },
+    "tooltip": [
+      { "field": "state_name", "title": "State" },
+      { "field": "quake_count", "title": "Earthquakes" },
+      { "field": "population", "title": "Population", "format": "," },
+      { "field": "per_million", "title": "Per million" }
+    ]
+  }
+}

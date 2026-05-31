@@ -1,0 +1,32 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "CHOROPLETH: earthquakes per million residents by state. GA counts / ABS population (Sep 2025). Annotated callout on the Northern Territory.",
+  "width": "container", "height": 480,
+  "projection": { "type": "mercator" },
+  "layer": [
+    {
+      "data": { "url": "data/au.json", "format": { "type": "json", "property": "features" } },
+      "transform": [
+        { "lookup": "properties.name", "from": { "data": { "url": "data/state-stats.csv" }, "key": "state_name", "fields": ["per_million", "quake_count", "population"] } }
+      ],
+      "mark": { "type": "geoshape", "stroke": "#0e1620", "strokeWidth": 0.8 },
+      "encoding": {
+        "color": { "field": "per_million", "type": "quantitative", "title": "Quakes per million people" },
+        "tooltip": [
+          { "field": "properties.name", "type": "nominal", "title": "State" },
+          { "field": "quake_count", "type": "quantitative", "title": "Earthquakes" },
+          { "field": "per_million", "type": "quantitative", "title": "Per million" }
+        ]
+      }
+    },
+    {
+      "data": { "values": [ { "lon": 133.4, "lat": -19.5, "t": "Highest per person" } ] },
+      "mark": { "type": "text", "fontSize": 12, "fontWeight": 700, "color": "#ffffff", "stroke": "#0e1620", "strokeWidth": 0.5 },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "text": { "field": "t", "type": "nominal" }
+      }
+    }
+  ]
+}

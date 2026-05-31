@@ -1,0 +1,22 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Change in each state's rank from raw earthquake count to earthquakes per person. Lines crossing show the flip.",
+  "width": "container", "height": 380,
+  "data": { "url": "data/state-stats.csv" },
+  "transform": [
+    { "window": [ { "op": "rank", "as": "rank_count" } ], "sort": [ { "field": "quake_count", "order": "descending" } ] },
+    { "window": [ { "op": "rank", "as": "rank_pc" } ], "sort": [ { "field": "per_million", "order": "descending" } ] },
+    { "fold": [ "rank_count", "rank_pc" ], "as": [ "metric", "rank" ] },
+    { "calculate": "datum.metric === 'rank_count' ? 'By raw count' : 'Per person'", "as": "view" }
+  ],
+  "encoding": {
+    "x": { "field": "view", "type": "nominal", "title": null, "sort": [ "By raw count", "Per person" ], "scale": { "padding": 0.5 }, "axis": { "labelAngle": 0, "labelFontSize": 12, "labelColor": "#cdd8e2" } },
+    "y": { "field": "rank", "type": "quantitative", "title": "Rank (1 = most)", "scale": { "reverse": true, "domain": [1, 8], "nice": false }, "axis": { "values": [1,2,3,4,5,6,7,8], "grid": false } }
+  },
+  "layer": [
+    { "mark": { "type": "line", "color": "#ff6b35", "strokeWidth": 2, "opacity": 0.7 }, "encoding": { "detail": { "field": "state" } } },
+    { "mark": { "type": "circle", "color": "#ff6b35", "size": 110 }, "encoding": { "detail": { "field": "state" } } },
+    { "transform": [ { "filter": "datum.view === 'By raw count'" } ], "mark": { "type": "text", "align": "right", "dx": -10, "fontSize": 11, "fontWeight": 600, "color": "#eaf0f6" }, "encoding": { "text": { "field": "state", "type": "nominal" } } },
+    { "transform": [ { "filter": "datum.view === 'Per person'" } ], "mark": { "type": "text", "align": "left", "dx": 10, "fontSize": 11, "fontWeight": 600, "color": "#eaf0f6" }, "encoding": { "text": { "field": "state", "type": "nominal" } } }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Capital cities sized by population and shaded by earthquakes within 200 km (GA quakes x ABS Regional Population).",
+  "width": "container", "height": 480,
+  "projection": { "type": "mercator" },
+  "layer": [
+    { "data": { "url": "data/au.json", "format": { "type": "json", "property": "features" } },
+      "mark": { "type": "geoshape", "fill": "#27333f", "stroke": "#3b4a59", "strokeWidth": 0.6 } },
+    { "data": { "url": "data/cities.csv" },
+      "mark": { "type": "circle", "opacity": 0.9, "stroke": "#0e1620", "strokeWidth": 0.8 },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "size": { "field": "population", "type": "quantitative", "title": "Population", "scale": { "range": [80, 1600] } },
+        "color": { "field": "quakes_200km", "type": "quantitative", "title": "Quakes within 200 km" },
+        "tooltip": [
+          { "field": "city", "type": "nominal", "title": "City" },
+          { "field": "population", "type": "quantitative", "title": "Population", "format": "," },
+          { "field": "quakes_200km", "type": "quantitative", "title": "Quakes within 200 km" }
+        ]
+      } },
+    { "data": { "url": "data/cities.csv" }, "transform": [ { "filter": "datum.city !== 'Canberra'" } ],
+      "mark": { "type": "text", "dy": -16, "fontSize": 11, "fontWeight": 700, "color": "#ffffff", "stroke": "#0e1620", "strokeWidth": 0.5 },
+      "encoding": { "longitude": { "field": "lon", "type": "quantitative" }, "latitude": { "field": "lat", "type": "quantitative" }, "text": { "field": "city", "type": "nominal" } } },
+    { "data": { "url": "data/cities.csv" }, "transform": [ { "filter": "datum.city === 'Canberra'" } ],
+      "mark": { "type": "text", "dy": 18, "fontSize": 11, "fontWeight": 700, "color": "#ffffff", "stroke": "#0e1620", "strokeWidth": 0.5 },
+      "encoding": { "longitude": { "field": "lon", "type": "quantitative" }, "latitude": { "field": "lat", "type": "quantitative" }, "text": { "field": "city", "type": "nominal" } } }
+  ]
+}

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Shaking Continent — Bryan Landy</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  
+  <style>
+    :root {
+      --bg:#0e1620; --bg-elev:#15202d; --ink:#eaf0f6; --muted:#8ea1b4;
+      --line:#23323f; --accent:#ff6b35; --accent2:#ff9f1c; --max:940px;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink);
+      font-family:Inter, system-ui, sans-serif; font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased; }
+    .wrap { max-width:var(--max); margin:0 auto; padding:0 1.25rem; }
+    a { color:var(--accent); }
+
+    header.hero { padding:6rem 0 4rem; text-align:center;
+      background: radial-gradient(1200px 420px at 50% -10%, rgba(255,107,53,.22), transparent 60%),
+                  radial-gradient(900px 500px at 50% 0%, rgba(255,159,28,.10), transparent 55%);
+      border-bottom:1px solid var(--line); }
+    .hero-icon { color:var(--accent); width:62px; height:62px; margin:0 auto 1.6rem; }
+    .hero-icon svg { width:100%; height:100%; display:block; }
+    h1 { font-family:Space Grotesk, sans-serif; font-weight:700; font-size:clamp(2.4rem,6vw,4.2rem);
+      line-height:1.03; margin:0 0 1.2rem; letter-spacing:-0.01em; }
+    .lede { font-size:1.2rem; color:var(--muted); max-width:58ch; margin:0 auto; }
+    .hero-rule { width:120px; height:1px; background:var(--line); margin:2.2rem auto 1.4rem; }
+    .byline { font-size:.78rem; color:var(--muted); letter-spacing:.16em; text-transform:uppercase; margin:0; }
+
+    section { padding:3.25rem 0; border-top:1px solid var(--line); }
+    .num { font-family:Space Grotesk, sans-serif; color:var(--accent2); font-size:.85rem; letter-spacing:.12em; margin:0 0 .4rem; }
+    h2 { font-family:Space Grotesk, sans-serif; font-weight:700; font-size:clamp(1.5rem,3.5vw,2.1rem); margin:0 0 .9rem; line-height:1.12; }
+    section p { color:#cdd8e2; max-width:68ch; }
+
+    figure { margin:1.6rem 0 0; }
+    .viz { background:var(--bg-elev); border:1px solid var(--line); border-radius:14px; padding:1.1rem; width:100%; overflow-x:auto; }
+    figcaption { color:var(--muted); font-size:.88rem; margin-top:.7rem; }
+
+    
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-top:1.6rem; }
+    .row figure { margin:0; }
+    @media (max-width:720px) { .row { grid-template-columns:1fr; } }
+
+    
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin:2.5rem 0 0; }
+    .stat { background:var(--bg-elev); border:1px solid var(--line); border-top:2px solid var(--accent); border-radius:12px; padding:1.4rem 1rem; text-align:center; }
+    .stat .big { font-family:Space Grotesk, sans-serif; font-size:2rem; font-weight:700; color:var(--accent); line-height:1; }
+    .stat .lbl { color:var(--muted); font-size:.8rem; margin-top:.55rem; line-height:1.35; }
+    @media (max-width:720px) { .stats { grid-template-columns:1fr 1fr; } }
+
+    footer { padding:3.5rem 0 5rem; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem; }
+    footer h3 { font-family:Space Grotesk, sans-serif; color:var(--ink); font-size:1rem; margin:0 0 .6rem; }
+    footer ul { padding-left:1.1rem; margin:.3rem 0 1.2rem; }
+    footer li { margin:.25rem 0; }
+  </style>
+</head>
+
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-icon">
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <polyline points="5,22 18,22 23,11 29,33 35,16 41,24 59,24" />
+          <path d="M5 50 L22 29 L31 40 L42 23 L59 50 Z" />
+        </svg>
+      </div>
+      <h1>The Shaking<br>Continent</h1>
+      <p class="lede">Australia sits deep inside a tectonic plate, far from the boundaries that rattle Japan or New Zealand. Yet between 2005 and 2026, more than 5,000 earthquakes were recorded beneath it. Here is where the continent shakes, how hard — and why the risk falls hardest where the fewest people live.</p>
+      <div class="hero-rule"></div>
+      <p class="byline">Bryan Landy · 35873191 · FIT2179 · Data Visualisation 2</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section id="intro">
+      <p>We tend to picture earthquakes as someone else's problem — a hazard for the Pacific &ldquo;Ring of Fire&rdquo;, not for the world's flattest, oldest and most stable continent. Yet Australia is not silent. Over the two decades to 2026, Geoscience Australia logged <strong>5,280 earthquakes</strong> of magnitude 2.5 or greater. Most were too faint to notice; a handful cracked walls, closed highways and sent tens of thousands of people into the street. Where they strike — and who actually feels them — is not what most Australians would guess.</p>
+      <div class="stats">
+        <div class="stat"><div class="big">5,280</div><div class="lbl">earthquakes recorded (M2.5+, 2005&ndash;2026)</div></div>
+        <div class="stat"><div class="big">7.4</div><div class="lbl">largest magnitude &mdash; off Macquarie Island, 2008</div></div>
+        <div class="stat"><div class="big">90%</div><div class="lbl">struck within 10&nbsp;km of the surface</div></div>
+        <div class="stat"><div class="big">43,085</div><div class="lbl">felt reports for the 2021 Woods Point quake</div></div>
+      </div>
+    </section>
+
+    <section id="map">
+      <p class="num">01</p>
+      <h2>Where the ground moves</h2>
+      <p>Plot every quake and a hidden geography emerges. The eastern seaboard, where most Australians live, is comparatively quiet. The activity is inland and west: a dense band through <strong>south-west Western Australia</strong> around Meckering and Kalgoorlie, a cluster along the <strong>Flinders Ranges</strong> in South Australia, and scattered shocks across the centre. These are <em>intraplate</em> earthquakes — they occur far from any plate boundary, where ancient crust is slowly squeezed. Almost all sit within about 10 kilometres of the surface.</p>
+      <figure><div class="viz" id="vis-map"></div>
+        <figcaption>Each dot is an earthquake. Size = magnitude, colour = depth (yellow = shallow).</figcaption></figure>
+    </section>
+
+    <section id="basics">
+      <p class="num">02</p>
+      <h2>How often, and how hard</h2>
+      <p>Two basic questions: how often does Australia shake, and how hard? On the left, the yearly count jumps around but shows no clear upward trend — Australia isn't shaking more than it used to; we are simply recording more of it. On the right, the magnitudes follow a harsh arithmetic: <strong>87% of quakes fall below magnitude 3.5</strong>, the point at which people begin to notice. Each step up the scale means roughly ten times fewer events.</p>
+      <div class="row">
+        <figure><div class="viz" id="vis-per-year"></div><figcaption>Earthquakes recorded per year.</figcaption></figure>
+        <figure><div class="viz" id="vis-magnitude"></div><figcaption>Distribution of magnitudes (binned).</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="scatter">
+      <p class="num">03</p>
+      <h2>The biggest quakes run shallow</h2>
+      <p>Plotting every quake by its size and depth reveals a quiet rule of Australian seismicity: almost everything happens in the top 10 kilometres of crust, and the largest shocks are no exception. Shallow quakes pass their energy efficiently to the surface — another reason a magnitude-5 event here can rattle an entire town.</p>
+      <figure><div class="viz" id="vis-scatter"></div>
+        <figcaption>Depth versus magnitude. Each point is one earthquake.</figcaption></figure>
+    </section>
+
+    <section id="biggest">
+      <p class="num">04</p>
+      <h2>The biggest jolts on record</h2>
+      <p>Across two decades, only a handful of continental quakes broke magnitude 6. The strongest were a <strong>6.6 off Broome</strong> in 2019 and a <strong>6.1 in the Petermann Ranges</strong> in 2016 — powerful, but in the remote north-west and centre, far from any city. The 5.9 near Woods Point in 2021 stands out: smaller, yet right on Melbourne's doorstep. (Australia's single largest tremor, a 7.4 in 2008, struck beneath sub-Antarctic Macquarie Island — geologically Australian, but 1,500&nbsp;km from the mainland, so it sits outside this map of the continent.)</p>
+      <figure><div class="viz" id="vis-top10"></div>
+        <figcaption>The ten largest earthquakes by magnitude.</figcaption></figure>
+      <p>But size matters out of all proportion. Each step up the magnitude scale releases roughly thirty times more energy, so a few large quakes dominate completely: the single biggest — the <strong>2019 Broome quake</strong> — released over half of all the seismic energy of the past two decades, and the ten largest account for four-fifths of it.</p>
+      <figure><div class="viz" id="vis-energy"></div>
+        <figcaption>Running share of total earthquake energy released over time; the line jumps at each major quake.</figcaption></figure>
+    </section>
+
+    <section id="counts">
+      <p class="num">05</p>
+      <h2>Counts versus people</h2>
+      <p>Here is the twist. By raw count (left), <strong>Western Australia dominates</strong>, with South Australia second and the east trailing. But divide by population (right; ABS, September 2025) and the order flips: the <strong>Northern Territory</strong> — just 266,000 people — tops the list at around <strong>1,800 quakes per million residents</strong>, more than thirty times the rate of New South Wales or Victoria. Per person, the emptiest parts of Australia shake the most.</p>
+      <div class="row">
+        <figure><div class="viz" id="vis-by-state"></div><figcaption>Raw count by state / territory.</figcaption></figure>
+        <figure><div class="viz" id="vis-per-capita"></div><figcaption>Per million residents (GA ÷ ABS).</figcaption></figure>
+      </div>
+      <p>The flip is starker as a change in rank. Western Australia slips from first to second, New South Wales falls from third to fifth, and the Northern Territory leaps from fourth all the way to first.</p>
+      <figure><div class="viz" id="vis-slope"></div>
+        <figcaption>Each line is one state's change in rank — from raw count (left) to per person (right).</figcaption></figure>
+    </section>
+
+    <section id="per-capita-map">
+      <p class="num">06</p>
+      <h2>The risk map, per person</h2>
+      <p>The same finding, mapped. The arid centre and west burn bright; the crowded south-east coast stays pale. It is the central irony of Australian seismicity — the ground moves most where almost no one is there to feel it.</p>
+      <figure><div class="viz" id="vis-per-capita-map"></div>
+        <figcaption>Earthquakes per million residents, by state / territory.</figcaption></figure>
+    </section>
+
+    <section id="felt">
+      <p class="num">07</p>
+      <h2>Who actually feels it</h2>
+      <p>Magnitude isn't everything — what matters to people is whether a quake happens near them. The most-reported quake in the dataset wasn't a giant in the outback but a magnitude-5.9 near <strong>Woods Point, Victoria</strong>, on 21 September 2021, which shook Melbourne and drew over 43,000 &ldquo;felt&rdquo; reports. A modest 3.8 near Sunbury drew nearly 28,000. The quakes Australians feel are the ones beneath the south-eastern cities — not the larger, lonelier shocks out west.</p>
+      <figure><div class="viz" id="vis-most-felt"></div>
+        <figcaption>Each point is a quake: magnitude versus how many people reported feeling it (log scale). Bigger bubbles = more reports.</figcaption></figure>
+    </section>
+
+    <section id="cities">
+      <p class="num">08</p>
+      <h2>The cities closest to the action</h2>
+      <p>So which of the places Australians actually live face the most shaking? Counting earthquakes within 200 km of each capital reveals a final twist: <strong>Perth</strong> — ringed by the south-west's active faults — tops the list with nearly 400 nearby quakes, ahead of Melbourne. <strong>Brisbane</strong>, by contrast, sits almost untouched, with barely ten. Each circle is sized by the city's population and shaded by how many quakes occur nearby — so Australia's calmest big city and its most exposed one are, remarkably, both home to millions.</p>
+      <figure><div class="viz" id="vis-cities"></div>
+        <figcaption>Capital cities sized by population, shaded by earthquakes within 200 km (GA quakes &times; ABS Regional Population).</figcaption></figure>
+    </section>
+
+  </main>
+
+  <footer class="wrap">
+    <h3>About this visualisation</h3>
+    <p><strong>Author:</strong> [YOUR NAME] · [STUDENT ID] · Monash University FIT2179 · [DATE 2026]</p>
+    <h3>Data sources</h3>
+    <ul>
+      <li>Earthquakes: Geoscience Australia Earthquake Catalogue — <a href="https://earthquakes.ga.gov.au">earthquakes.ga.gov.au</a> (accessed [DATE]).</li>
+      <li>Population: Australian Bureau of Statistics, &ldquo;National, state and territory population&rdquo;, 30 September 2025 — <a href="https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/latest-release">abs.gov.au</a> (accessed [DATE]).</li>
+      <li>Capital city population: Australian Bureau of Statistics, &ldquo;Regional Population&rdquo;, 2024&ndash;25 (ERP at 30 June 2025) — <a href="https://abs.gov.au/statistics/people/population/regional-population/latest-release">abs.gov.au</a> (accessed [DATE]).</li>
+      <li>Map boundaries: simplemaps.com Australia GeoJSON.</li>
+    </ul>
+    <h3>Acknowledgement</h3>
+    <p>This visualisation was produced with assistance from a generative AI tool. The AI was used to help improve the wording, grammar, and structure of the written explanations. It was also used to assist with data calculations from the existing datasets, such as preparing derived values for the charts, and to provide guidance on coding the Vega-Lite specifications. In addition, AI was used to suggest possible chart types and explain whether the chosen charts were appropriate for the data. The author selected the topic, sourced the datasets, reviewed the code and outputs, checked the results, and edited the final work independently.</em></p>
+  </footer>
+
+  <script>
+    const vlConfig = {
+      background:"transparent", font:"Inter, sans-serif",
+      title:{ color:"#eaf0f6", font:"Space Grotesk", fontSize:13, fontWeight:600 },
+      axis:{ labelColor:"#8ea1b4", titleColor:"#cdd8e2", labelFont:"Inter", titleFont:"Inter",
+             gridColor:"#1d2a36", domainColor:"#33424f", tickColor:"#33424f" },
+      legend:{ labelColor:"#8ea1b4", titleColor:"#cdd8e2", labelFont:"Inter", titleFont:"Inter" },
+      view:{ stroke:"transparent" },
+      range:{ ramp:{ scheme:"yelloworangered" }, heatmap:{ scheme:"yelloworangered" } },
+      bar:{ fill:"#ff6b35" }, circle:{ fill:"#ff6b35" }, rect:{ fill:"#ff6b35" }
+    };
+    const opt = { renderer:"svg", actions:true, config:vlConfig };
+
+    vegaEmbed("#vis-map",            "specs/quake-map.vl.json",             opt).catch(console.error);
+    vegaEmbed("#vis-per-year",       "specs/quakes-per-year.vl.json",       opt).catch(console.error);
+    vegaEmbed("#vis-magnitude",      "specs/magnitude-histogram.vl.json",   opt).catch(console.error);
+    vegaEmbed("#vis-scatter",        "specs/depth-vs-magnitude.vl.json",    opt).catch(console.error);
+    vegaEmbed("#vis-top10",          "specs/top-10-largest.vl.json",        opt).catch(console.error);
+    vegaEmbed("#vis-energy",         "specs/cumulative-energy.vl.json",     opt).catch(console.error);
+    vegaEmbed("#vis-by-state",       "specs/quakes-by-state.vl.json",       opt).catch(console.error);
+    vegaEmbed("#vis-per-capita",     "specs/quakes-per-capita-bar.vl.json", opt).catch(console.error);
+    vegaEmbed("#vis-slope",          "specs/rank-slope.vl.json",            opt).catch(console.error);
+    vegaEmbed("#vis-per-capita-map", "specs/quakes-per-capita-map.vl.json", opt).catch(console.error);
+    vegaEmbed("#vis-most-felt",      "specs/most-felt-quakes.vl.json",      opt).catch(console.error);
+    vegaEmbed("#vis-cities",         "specs/city-exposure-map.vl.json",     opt).catch(console.error);
+  </script>
+</body>
+</html>

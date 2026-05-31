@@ -1,0 +1,23 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Running share of total seismic energy released over time. A few large quakes dominate. Energy = 10^(1.5 x magnitude); cumulative as a percentage of the total.",
+  "width": "container", "height": 300,
+  "data": { "url": "data/earthquakes.csv", "format": { "type": "csv", "parse": { "preferred_magnitude": "number", "origin_time": "date", "latitude": "number", "longitude": "number" } } },
+  "transform": [
+    { "filter": "datum.latitude >= -45 && datum.latitude <= -9 && datum.longitude >= 110 && datum.longitude <= 155" },
+    { "calculate": "pow(10, 1.5 * datum.preferred_magnitude)", "as": "energy" },
+    { "joinaggregate": [ { "op": "sum", "field": "energy", "as": "total_e" } ] },
+    { "sort": [ { "field": "origin_time" } ], "window": [ { "op": "sum", "field": "energy", "as": "cum_e" } ], "frame": [ null, 0 ] },
+    { "calculate": "datum.cum_e / datum.total_e * 100", "as": "pct" }
+  ],
+  "mark": { "type": "line", "color": "#ff6b35", "strokeWidth": 2, "interpolate": "step-after" },
+  "encoding": {
+    "x": { "field": "origin_time", "type": "temporal", "title": "Year" },
+    "y": { "field": "pct", "type": "quantitative", "title": "Share of total energy released (%)", "scale": { "domain": [0, 100] } },
+    "tooltip": [
+      { "field": "description", "type": "nominal", "title": "Location" },
+      { "field": "preferred_magnitude", "type": "quantitative", "title": "Magnitude" },
+      { "field": "origin_time", "type": "temporal", "timeUnit": "yearmonthdate", "title": "Date" }
+    ]
+  }
+}

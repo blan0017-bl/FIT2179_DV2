@@ -1,0 +1,20 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "The ten largest earthquakes by magnitude on the Australian continent (2005-2026). Excludes sub-Antarctic Macquarie Island.",
+  "width": "container", "height": 360,
+  "data": { "url": "data/earthquakes.csv", "format": { "type": "csv", "parse": { "preferred_magnitude": "number", "origin_time": "date", "latitude": "number", "longitude": "number" } } },
+  "transform": [
+    { "filter": "datum.latitude >= -45 && datum.latitude <= -9 && datum.longitude >= 110 && datum.longitude <= 155" },
+    { "window": [ { "op": "rank", "as": "rnk" } ], "sort": [ { "field": "preferred_magnitude", "order": "descending" } ] },
+    { "filter": "datum.rnk <= 10" },
+    { "calculate": "replace(datum.description, /\\..*$/, '') + ' (' + year(datum.origin_time) + ')'", "as": "label" }
+  ],
+  "encoding": {
+    "y": { "field": "label", "type": "nominal", "sort": "-x", "title": null, "axis": { "labelLimit": 300 } },
+    "x": { "field": "preferred_magnitude", "type": "quantitative", "title": "Magnitude", "scale": { "zero": true } }
+  },
+  "layer": [
+    { "mark": { "type": "bar", "size": 2 } },
+    { "mark": { "type": "circle", "size": 140 } }
+  ]
+}

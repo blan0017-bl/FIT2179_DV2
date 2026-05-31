@@ -1,0 +1,24 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Depth vs magnitude. Almost all quakes are shallow; the largest are no exception.",
+  "width": "container", "height": 340,
+  "encoding": { "y": { "field": "depth", "type": "quantitative", "title": "Depth (km)", "scale": { "domain": [0, 50], "clamp": true } } },
+  "layer": [
+    {
+      "data": { "url": "data/earthquakes.csv" },
+      "mark": { "type": "circle", "opacity": 0.25 },
+      "encoding": {
+        "x": { "field": "preferred_magnitude", "type": "quantitative", "title": "Magnitude", "scale": { "zero": false } },
+        "tooltip": [
+          { "field": "description", "type": "nominal", "title": "Location" },
+          { "field": "preferred_magnitude", "type": "quantitative", "title": "Magnitude" },
+          { "field": "depth", "type": "quantitative", "title": "Depth (km)" }
+        ]
+      }
+    },
+    { "data": { "values": [ { "d": 10 } ] }, "mark": { "type": "rule", "color": "#ff9f1c", "strokeDash": [4, 4] }, "encoding": { "y": { "field": "d", "type": "quantitative" } } },
+    { "data": { "values": [ { "d": 10, "x": 5.6, "t": "~90% shallower than 10 km" } ] },
+      "mark": { "type": "text", "align": "right", "dy": -7, "color": "#ff9f1c", "fontSize": 11, "fontWeight": 600 },
+      "encoding": { "y": { "field": "d", "type": "quantitative" }, "x": { "field": "x", "type": "quantitative" }, "text": { "field": "t", "type": "nominal" } } }
+  ]
+}

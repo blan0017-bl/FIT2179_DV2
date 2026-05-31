@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Total earthquakes by state/territory, with value labels.",
+  "width": "container", "height": 300,
+  "data": { "url": "data/state-stats.csv" },
+  "encoding": {
+    "y": { "field": "state", "type": "nominal", "title": null, "sort": "-x" },
+    "x": { "field": "quake_count", "type": "quantitative", "title": "Earthquakes (raw count)" }
+  },
+  "layer": [
+    { "mark": "bar", "encoding": { "tooltip": [ { "field": "state_name", "title": "State" }, { "field": "quake_count", "title": "Earthquakes" } ] } },
+    { "mark": { "type": "text", "align": "left", "dx": 4, "color": "#cdd8e2", "fontSize": 10 },
+      "encoding": { "text": { "field": "quake_count", "type": "quantitative", "format": "," } } }
+  ]
+}

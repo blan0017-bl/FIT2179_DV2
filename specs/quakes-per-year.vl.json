@@ -1,0 +1,21 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Earthquakes recorded per year, annotated with the busiest year.",
+  "width": "container", "height": 300,
+  "layer": [
+    {
+      "data": { "url": "data/earthquakes.csv" },
+      "mark": { "type": "area", "line": { "color": "#ff6b35", "strokeWidth": 2 }, "color": "#ff6b35", "opacity": 0.4, "interpolate": "monotone" },
+      "encoding": {
+        "x": { "field": "origin_time", "type": "temporal", "timeUnit": "year", "title": "Year" },
+        "y": { "aggregate": "count", "title": "Number of earthquakes" },
+        "tooltip": [ { "field": "origin_time", "timeUnit": "year", "title": "Year" }, { "aggregate": "count", "title": "Earthquakes" } ]
+      }
+    },
+    { "data": { "values": [ { "t": "2019-06-01", "c": 460 } ] }, "mark": { "type": "point", "color": "#ffffff", "size": 45, "filled": true },
+      "encoding": { "x": { "field": "t", "type": "temporal" }, "y": { "field": "c", "type": "quantitative" } } },
+    { "data": { "values": [ { "t": "2019-06-01", "c": 460, "label": "2019 peak — 460" } ] },
+      "mark": { "type": "text", "align": "right", "dx": -8, "dy": -4, "color": "#ffffff", "fontSize": 11, "fontWeight": 600 },
+      "encoding": { "x": { "field": "t", "type": "temporal" }, "y": { "field": "c", "type": "quantitative" }, "text": { "field": "label", "type": "nominal" } } }
+  ]
+}

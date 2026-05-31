@@ -1,0 +1,33 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Magnitude vs number of public 'felt' reports (log). Small quakes near big cities can be felt by more people than large, remote ones.",
+  "width": "container", "height": 360,
+  "data": { "url": "data/earthquakes.csv", "format": { "type": "csv", "parse": { "felt_reports_count": "number", "preferred_magnitude": "number", "origin_time": "date" } } },
+  "transform": [ { "filter": "datum.felt_reports_count > 0" } ],
+  "encoding": {
+    "x": { "field": "preferred_magnitude", "type": "quantitative", "title": "Magnitude", "scale": { "zero": false } },
+    "y": { "field": "felt_reports_count", "type": "quantitative", "title": "People who reported feeling it", "scale": { "type": "log" } }
+  },
+  "layer": [
+    {
+      "mark": { "type": "circle", "opacity": 0.45 },
+      "encoding": {
+        "size": { "field": "felt_reports_count", "type": "quantitative", "title": "Felt reports", "legend": null },
+        "tooltip": [
+          { "field": "description", "type": "nominal", "title": "Location" },
+          { "field": "preferred_magnitude", "type": "quantitative", "title": "Magnitude" },
+          { "field": "felt_reports_count", "type": "quantitative", "title": "Felt reports", "format": "," }
+        ]
+      }
+    },
+    {
+      "transform": [
+        { "window": [ { "op": "rank", "as": "rnk" } ], "sort": [ { "field": "felt_reports_count", "order": "descending" } ] },
+        { "filter": "datum.rnk <= 4" },
+        { "calculate": "replace(datum.description, /\\..*$/, '') + ' (' + year(datum.origin_time) + ')'", "as": "label" }
+      ],
+      "mark": { "type": "text", "align": "right", "dx": -8, "fontSize": 11, "fontWeight": 600, "color": "#ffffff" },
+      "encoding": { "text": { "field": "label", "type": "nominal" } }
+    }
+  ]
+}

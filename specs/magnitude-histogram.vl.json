@@ -1,0 +1,21 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Distribution of magnitudes, with the M3.5 'felt' threshold marked.",
+  "width": "container", "height": 300,
+  "layer": [
+    {
+      "data": { "url": "data/earthquakes.csv" },
+      "mark": "bar",
+      "encoding": {
+        "x": { "field": "preferred_magnitude", "type": "quantitative", "bin": { "step": 0.5 }, "title": "Magnitude" },
+        "y": { "aggregate": "count", "title": "Number of earthquakes" },
+        "tooltip": [ { "field": "preferred_magnitude", "bin": { "step": 0.5 }, "title": "Magnitude" }, { "aggregate": "count", "title": "Earthquakes" } ]
+      }
+    },
+    { "data": { "values": [ { "m": 3.5 } ] }, "mark": { "type": "rule", "color": "#ff9f1c", "strokeDash": [4, 4], "size": 1.5 },
+      "encoding": { "x": { "field": "m", "type": "quantitative" } } },
+    { "data": { "values": [ { "m": 3.5, "y": 2900, "label": "M3.5 — people start to notice" } ] },
+      "mark": { "type": "text", "align": "left", "dx": 7, "color": "#ff9f1c", "fontSize": 11, "fontWeight": 600 },
+      "encoding": { "x": { "field": "m", "type": "quantitative" }, "y": { "field": "y", "type": "quantitative" }, "text": { "field": "label", "type": "nominal" } } }
+  ]
+}

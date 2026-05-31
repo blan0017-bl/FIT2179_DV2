@@ -1,0 +1,16 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Earthquakes per month, by year and month. Bright streaks are aftershock sequences, not seasons.",
+  "width": "container", "height": 320,
+  "data": { "url": "data/earthquakes.csv", "format": { "type": "csv", "parse": { "origin_time": "date" } } },
+  "mark": { "type": "rect" },
+  "encoding": {
+    "x": { "field": "origin_time", "type": "ordinal", "timeUnit": "year", "title": "Year" },
+    "y": { "field": "origin_time", "type": "ordinal", "timeUnit": "month", "title": "Month" },
+    "color": { "aggregate": "count", "type": "quantitative", "title": "Earthquakes" },
+    "tooltip": [
+      { "field": "origin_time", "timeUnit": "yearmonth", "title": "Month" },
+      { "aggregate": "count", "title": "Earthquakes" }
+    ]
+  }
+}
