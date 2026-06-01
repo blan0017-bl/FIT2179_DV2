@@ -43,7 +43,7 @@
     section p { color:#cdd8e2; max-width:68ch; }
 
     figure { margin:1.6rem 0 0; }
-    .viz { background:var(--bg-elev); border:1px solid var(--line); border-radius:14px; padding:1.1rem; width:100%; overflow-x:auto; }
+    .viz { background:var(--bg-elev); border:1px solid var(--line); border-radius:14px; padding:1.1rem; width:100%; overflow-x:hidden; }
     figcaption { color:var(--muted); font-size:.88rem; margin-top:.7rem; }
 
     
@@ -58,10 +58,24 @@
     .stat .lbl { color:var(--muted); font-size:.8rem; margin-top:.55rem; line-height:1.35; }
     @media (max-width:720px) { .stats { grid-template-columns:1fr 1fr; } }
 
-    footer { padding:3.5rem 0 5rem; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem; }
-    footer h3 { font-family:Space Grotesk, sans-serif; color:var(--ink); font-size:1rem; margin:0 0 .6rem; }
-    footer ul { padding-left:1.1rem; margin:.3rem 0 1.2rem; }
-    footer li { margin:.25rem 0; }
+    footer { padding:3.5rem 0 4.5rem; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem; }
+    .footer-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:2.5rem; }
+    footer h3 { font-family:Space Grotesk, sans-serif; color:var(--muted); font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; font-weight:700; margin:0 0 .9rem; }
+    footer p { margin:.35rem 0; max-width:none; }
+    footer ul { padding-left:1.1rem; margin:.3rem 0; }
+    footer li { margin:.5rem 0; }
+    .footer-bottom { text-align:center; font-size:.85rem; margin-top:2.6rem; padding-top:1.6rem; border-top:1px solid var(--line); }
+    @media (max-width:720px) { .footer-grid { grid-template-columns:1fr; gap:1.8rem; } }
+
+    /* closing summary */
+    .summary { margin:3.5rem 0 1rem; padding:2.5rem; border:1px solid var(--line); border-radius:18px;
+      background: radial-gradient(700px 280px at 82% -25%, rgba(255,107,53,.16), transparent 60%), var(--bg-elev); }
+    .summary-icon { color:var(--accent); width:40px; height:40px; margin-bottom:1rem; }
+    .summary-icon svg { width:100%; height:100%; display:block; }
+    .summary h2 { margin:0 0 1rem; }
+    .summary p { color:#cdd8e2; max-width:none; }
+    .summary .stats { margin-top:2.2rem; }
+    .summary .stat { background:rgba(255,255,255,.03); }
   </style>
 </head>
 
@@ -77,7 +91,7 @@
       <h1>The Shaking<br>Continent</h1>
       <p class="lede">Australia sits deep inside a tectonic plate, far from the boundaries that rattle Japan or New Zealand. Yet between 2005 and 2026, more than 5,000 earthquakes were recorded beneath it. Here is where the continent shakes, how hard — and why the risk falls hardest where the fewest people live.</p>
       <div class="hero-rule"></div>
-      <p class="byline">Bryan Landy · 35873191 · FIT2179 · Data Visualisation 2</p>
+      <p class="byline">Bryan Landy · 35873191 · FIT2179 · Data Visualisation 2 · 2026</p>
     </div>
   </header>
 
@@ -167,20 +181,53 @@
         <figcaption>Capital cities sized by population, shaded by earthquakes within 200 km (GA quakes &times; ABS Regional Population).</figcaption></figure>
     </section>
 
+    <div class="summary">
+      <div class="summary-icon">
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <polyline points="5,22 18,22 23,11 29,33 35,16 41,24 59,24" />
+          <path d="M5 50 L22 29 L31 40 L42 23 L59 50 Z" />
+        </svg>
+      </div>
+      <h2>The Shaking Continent: the full picture</h2>
+      <p>On the surface, Australia looks geologically asleep — the flattest, oldest and most stable continent, far from any plate boundary. Yet in two decades it logged 5,280 earthquakes. They cluster where few would think to look: through south-west Western Australia, along the Flinders Ranges, and across the arid centre, almost all within ten kilometres of the surface.</p>
+      <p>Counting them tells one story; dividing by population tells another. Western Australia records the most quakes, but per person the near-empty Northern Territory shakes hardest of all, at over 1,800 per million residents. And because energy climbs so steeply with magnitude, a single event off Broome in 2019 released more than half of the entire period's seismic energy.</p>
+      <p>What people actually feel comes down to proximity. The most-felt quake was not a remote giant but a magnitude-5.9 beneath Woods Point that rattled Melbourne and drew 43,000 reports. Among the capitals, Perth sits closest to the action with nearly 400 nearby quakes, while Brisbane stays almost untouched. The ground moves most where the fewest people live — but it is the cities that decide what the country feels.</p>
+      <div class="stats">
+        <div class="stat"><div class="big">1,819</div><div class="lbl">NT earthquakes per million residents — the highest in the country</div></div>
+        <div class="stat"><div class="big">397</div><div class="lbl">quakes within 200&nbsp;km of Perth, the most exposed capital</div></div>
+        <div class="stat"><div class="big">52%</div><div class="lbl">of all energy released by one quake, off Broome in 2019</div></div>
+        <div class="stat"><div class="big">8</div><div class="lbl">states &amp; territories compared, by count and per person</div></div>
+      </div>
+    </div>
+
   </main>
 
   <footer class="wrap">
-    <h3>About this visualisation</h3>
-    <p><strong>Author:</strong> [YOUR NAME] · [STUDENT ID] · Monash University FIT2179 · [DATE 2026]</p>
-    <h3>Data sources</h3>
-    <ul>
-      <li>Earthquakes: Geoscience Australia Earthquake Catalogue — <a href="https://earthquakes.ga.gov.au">earthquakes.ga.gov.au</a> (accessed [DATE]).</li>
-      <li>Population: Australian Bureau of Statistics, &ldquo;National, state and territory population&rdquo;, 30 September 2025 — <a href="https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/latest-release">abs.gov.au</a> (accessed [DATE]).</li>
-      <li>Capital city population: Australian Bureau of Statistics, &ldquo;Regional Population&rdquo;, 2024&ndash;25 (ERP at 30 June 2025) — <a href="https://abs.gov.au/statistics/people/population/regional-population/latest-release">abs.gov.au</a> (accessed [DATE]).</li>
-      <li>Map boundaries: simplemaps.com Australia GeoJSON.</li>
-    </ul>
-    <h3>Acknowledgement</h3>
-    <p>This visualisation was produced with assistance from a generative AI tool. The AI was used to help improve the wording, grammar, and structure of the written explanations. It was also used to assist with data calculations from the existing datasets, such as preparing derived values for the charts, and to provide guidance on coding the Vega-Lite specifications. In addition, AI was used to suggest possible chart types and explain whether the chosen charts were appropriate for the data. The author selected the topic, sourced the datasets, reviewed the code and outputs, checked the results, and edited the final work independently.</em></p>
+    <div class="footer-grid">
+      <div>
+        <h3>About this work</h3>
+        <p><strong>Author:</strong> Bryan Landy</p>
+        <p><strong>Student ID:</strong> 35873191</p>
+        <p>FIT2179 Data Visualisation 2 · Semester 1 2026</p>
+        <p>Monash University</p>
+        <p>Last updated: May 2026</p>
+      </div>
+      <div>
+        <h3>Data sources</h3>
+        <ul>
+          <li>Earthquakes: Geoscience Australia Earthquake Catalogue, <a href="https://earthquakes.ga.gov.au">earthquakes.ga.gov.au</a>, accessed May 2026.</li>
+          <li>State population: Australian Bureau of Statistics, &ldquo;National, state and territory population&rdquo;, 30 September 2025, <a href="https://www.abs.gov.au/statistics/people/population/national-state-and-territory-population/latest-release">abs.gov.au</a>.</li>
+          <li>Capital city population: Australian Bureau of Statistics, &ldquo;Regional Population&rdquo;, ERP at 30 June 2025, <a href="https://abs.gov.au/statistics/people/population/regional-population/latest-release">abs.gov.au</a>.</li>
+          <li>Map boundaries: simplemaps.com Australia GeoJSON.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Acknowledgements</h3>
+        <p>This visualisation was produced with assistance from a generative AI tool. The AI was used to help improve the wording, grammar and structure of the written text; to assist with data calculations and derived values from the existing datasets; to give guidance on coding the Vega-Lite specifications; and to suggest and sanity-check chart types. The author selected the topic, sourced the datasets, reviewed the code and outputs, checked the results, and edited the final work independently.</p>
+        <p>Fonts: Space Grotesk &amp; Inter via Google Fonts.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">Built with Vega-Lite · FIT2179 Data Visualisation 2 · Monash University</div>
   </footer>
 
   <script>
@@ -194,7 +241,7 @@
       range:{ ramp:{ scheme:"yelloworangered" }, heatmap:{ scheme:"yelloworangered" } },
       bar:{ fill:"#ff6b35" }, circle:{ fill:"#ff6b35" }, rect:{ fill:"#ff6b35" }
     };
-    const opt = { renderer:"svg", actions:true, config:vlConfig };
+    const opt = { renderer:"svg", actions:false, config:vlConfig };
 
     vegaEmbed("#vis-map",            "specs/quake-map.vl.json",             opt).catch(console.error);
     vegaEmbed("#vis-per-year",       "specs/quakes-per-year.vl.json",       opt).catch(console.error);
