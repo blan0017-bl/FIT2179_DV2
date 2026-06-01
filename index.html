@@ -43,7 +43,7 @@
     section p { color:#cdd8e2; max-width:68ch; }
 
     figure { margin:1.6rem 0 0; }
-    .viz { background:var(--bg-elev); border:1px solid var(--line); border-radius:14px; padding:1.1rem; width:100%; overflow-x:hidden; }
+    .viz { background:var(--bg-elev); border:1px solid var(--line); border-radius:14px; padding:1.1rem; width:100%; overflow-x:auto; }
     figcaption { color:var(--muted); font-size:.88rem; margin-top:.7rem; }
 
     
@@ -241,7 +241,7 @@
       range:{ ramp:{ scheme:"yelloworangered" }, heatmap:{ scheme:"yelloworangered" } },
       bar:{ fill:"#ff6b35" }, circle:{ fill:"#ff6b35" }, rect:{ fill:"#ff6b35" }
     };
-    const opt = { renderer:"svg", actions:false, config:vlConfig };
+    const opt = { renderer:"svg", actions:true, config:vlConfig };
 
     vegaEmbed("#vis-map",            "specs/quake-map.vl.json",             opt).catch(console.error);
     vegaEmbed("#vis-per-year",       "specs/quakes-per-year.vl.json",       opt).catch(console.error);
